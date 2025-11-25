@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllProducts, getProductByHandle } from "@/lib/shopify";
+import { Button } from "@/components/ui/button";
+import ProductInfo from "@/components/product/ProductInfo";
 
 export async function getStaticPaths() {
     const products = await getAllProducts();
@@ -12,47 +14,112 @@ export async function getStaticPaths() {
     }));
 }
 
-const { product } = Astro.props;
-const data = await getProductByHandle(product.handle);
-console.log(data);
+const { handle } = Astro.params;
+const product = await getProductByHandle(handle);
+
+if (!product) {
+    return Astro.redirect("/404");
+}
+
+const images = product.images.edges.map((edge) => edge.node);
+const variants = product.variants.edges.map((edge) => edge.node);
 ---
 
 <BaseLayout>
-    <section class="container mx-auto py-12">
-        <Image
-            width={1024}
-            height={1024}
-            alt={product.title}
-            src={product.images.edges[0].node.url}
-            class="w-full max-w-lg mx-auto rounded shadow"
-            transition:name={`product-image-${product.handle}`}
-        />
-
-        {
-            product.variants && product.variants.edges.length > 0 && (
-                <div class="mt-8">
-                    <h2 class="text-xl font-bold mb-4">Opções</h2>
-                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                        {product.variants.edges.map((variant) => (
-                            <button
-                                class="px-4 py-2 border rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled={!variant.node.availableForSale}
-                            >
-                                {variant.node.title}
-                            </button>
-                        ))}
-                    </div>
+    <section class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+            {/* Product Images Gallery */}
+            <div class="space-y-4">
+                <div
+                    class="overflow-hidden rounded-lg bg-white shadow-sm border border-border/20 aspect-square relative"
+                >
+                    {
+                        images.length > 0 ? (
+                            <Image
+                                id="main-image"
+                                width={1000}
+                                height={1000}
+                                alt={images[0].altText || product.title}
+                                src={images[0].url}
+                                class="h-full w-full object-cover object-center absolute inset-0"
+                                transition:name={`product-image-${product.handle}`}
+                            />
+                        ) : (
+                            <div class="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+                                Sem imagem
+                            </div>
+                        )
+                    }
                 </div>
-            )
-        }
+                {/* Thumbnails (if more than 1 image) */}
+                {
+                    images.length > 1 && (
+                        <div class="grid grid-cols-4 gap-4">
+                            {images.map((image, index) => (
+                                <button
+                                    class="thumbnail-btn overflow-hidden rounded-md border border-border/20 hover:border-primary transition-colors aspect-square relative"
+                                    data-image-url={image.url}
+                                    aria-label={`Ver imagem ${index + 1}`}
+                                >
+                                    <Image
+                                        width={200}
+                                        height={200}
+                                        alt={
+                                            image.altText ||
+                                            `Imagem ${index + 1}`
+                                        }
+                                        src={image.url}
+                                        class="h-full w-full object-cover object-center absolute inset-0"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )
+                }
+            </div>
 
-        <div class="mt-8 text-center">
-            <h1 class="text-3xl font-bold">{product.title}</h1>
-            <h1 class="text-3xl font-bold">{product.id}</h1>
-
-            <p class="text-xl text-primary-600 mt-2">
-                {product.priceRange.minVariantPrice.amount} BRL
-            </p>
+            {/* Product Details */}
+            <ProductInfo
+                client:load
+                product={product}
+                variants={variants.map((v) => ({
+                    id: v.id,
+                    title: v.title,
+                    availableForSale: v.availableForSale,
+                    price: {
+                        amount: String(
+                            v.price?.amount ||
+                                product.priceRange.minVariantPrice.amount,
+                        ),
+                        currencyCode: v.price?.currencyCode || "BRL",
+                    },
+                }))}
+            />
         </div>
     </section>
 </BaseLayout>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const mainImage = document.getElementById(
+            "main-image",
+        ) as HTMLImageElement;
+        const thumbnails = document.querySelectorAll(".thumbnail-btn");
+
+        if (mainImage && thumbnails.length > 0) {
+            thumbnails.forEach((thumb) => {
+                thumb.addEventListener("click", () => {
+                    const newSrc = thumb.getAttribute("data-image-url");
+                    if (newSrc) {
+                        mainImage.src = newSrc;
+                        // Optional: Add active class to thumbnail
+                        thumbnails.forEach((t) =>
+                            t.classList.remove("ring-2", "ring-primary"),
+                        );
+                        thumb.classList.add("ring-2", "ring-primary");
+                    }
+                });
+            });
+        }
+    });
+</script>

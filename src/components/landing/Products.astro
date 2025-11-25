@@ -7,7 +7,9 @@ console.log(products);
 ---
 
 <section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 gap-6 lg:gap-y-24 md:grid-cols-2 lg:grid-cols-3 py-4">
+    <div
+        class="grid grid-cols-1 gap-6 lg:gap-y-24 md:grid-cols-2 lg:grid-cols-3 py-4"
+    >
         {
             products.map((product, index) => (
                 <figure class="relative group">
@@ -29,14 +31,11 @@ console.log(products);
                             )}
                         </div>
 
-                        <div class="mt-2 flex justify-between px-6">
-                            <div>
-                                <p class="mt-1 text-sm font-semibold text-base-900">
-                                    {product.title}
-                                </p>
-                                <h3 class="text-xs text-base-500">{product.handle}</h3>
-                            </div>
-                            <p class="text-base font-semibold text-green-800">
+                        <div class="mt-2 flex justify-between">
+                            <p class="text-sm font-semibold max-w-2/3">
+                                {product.title}
+                            </p>
+                            <p class="text-base font-semibold text-primary">
                                 R$ {product.priceRange.minVariantPrice.amount}
                             </p>
                         </div>

@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/contact/ContactForm";
+import { Mail, Phone, MapPin } from "lucide-react";
+---
+
+<BaseLayout>
+    <section class="container mx-auto px-4 py-16 max-w-5xl">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-text-main mb-4">Fale Conosco</h1>
+            <p class="text-xl text-text-muted">
+                Estamos aqui para ajudar você.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Informações de Contato */}
+            <div class="lg:col-span-1 space-y-8">
+                <div class="bg-surface p-6 rounded-lg border border-border/20">
+                    <h2 class="text-xl font-bold text-text-main mb-6">
+                        Informações
+                    </h2>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="p-3 bg-primary/10 rounded-full text-primary"
+                            >
+                                <Mail className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-text-main">
+                                    Email
+                                </h3>
+                                <p class="text-text-muted text-sm mt-1">
+                                    <a
+                                        href="mailto:matheus.dias.dev.3d@gmail.com"
+                                        class="hover:text-primary transition-colors"
+                                    >
+                                        matheus.dias.dev.3d@gmail.com
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="p-3 bg-primary/10 rounded-full text-primary"
+                            >
+                                <Phone className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-text-main">
+                                    Suporte
+                                </h3>
+                                <p class="text-text-muted text-sm mt-1">
+                                    <a
+                                        href="tel:+5564984313343"
+                                        class="hover:text-primary transition-colors"
+                                    >
+                                        (64) 98431-3343
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="p-3 bg-primary/10 rounded-full text-primary"
+                            >
+                                <MapPin className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-text-main">
+                                    Localização
+                                </h3>
+                                <p class="text-text-muted text-sm mt-1">
+                                    Brasil
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Formulário */}
+            <div class="lg:col-span-2">
+                <div
+                    class="bg-white p-8 rounded-lg border border-border/20 shadow-sm"
+                >
+                    <h2 class="text-2xl font-bold text-text-main mb-6">
+                        Envie uma mensagem
+                    </h2>
+                    <ContactForm client:load />
+                </div>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

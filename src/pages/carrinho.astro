@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CartList from "../components/cart/CartList";
+---
+
+<BaseLayout>
+    <section class="container mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold text-text-main mb-8">Seu Carrinho</h1>
+        <CartList client:load />
+    </section>
+</BaseLayout>
