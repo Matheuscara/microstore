@@ -16,15 +16,13 @@ export default function MobileMenu() {
 
     return (
         <>
-            <Button
-                variant="ghost"
-                size="icon"
-                className="md:hidden text-text-main"
+            <button
+                className="md:hidden p-2 text-text-main hover:bg-gray-100 rounded-md mr-2"
                 onClick={toggleMenu}
                 aria-label="Abrir menu"
             >
                 <Menu className="h-6 w-6" />
-            </Button>
+            </button>
 
             {/* Overlay */}
             {isOpen && (

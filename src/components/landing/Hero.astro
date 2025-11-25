@@ -1,0 +1,119 @@
+---
+import { Image } from "astro:assets";
+import heroLight from "../../images/hero-light.png";
+import { Button } from "../ui/button";
+---
+
+<section
+    class="relative w-full min-h-[600px] flex items-center bg-gray-50 overflow-hidden"
+>
+    <!-- Background Decoration -->
+    <div
+        class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-bl from-blue-50/50 to-transparent pointer-events-none"
+    >
+    </div>
+    <div
+        class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-purple-50/30 to-transparent rounded-full filter blur-3xl pointer-events-none"
+    >
+    </div>
+
+    <div
+        class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10 py-12"
+    >
+        <!-- Text Content -->
+        <div class="text-left space-y-6">
+            <div
+                class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-2 animate-fade-in"
+            >
+                Novo Lançamento
+            </div>
+            <h1
+                class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in delay-100"
+            >
+                O Setup dos <br />
+                <span class="text-primary">Seus Sonhos.</span>
+            </h1>
+            <p class="text-lg text-gray-600 max-w-lg animate-fade-in delay-200">
+                Transforme seu espaço de trabalho com acessórios minimalistas
+                que unem design, conforto e produtividade.
+            </p>
+            <div class="flex gap-4 pt-4 animate-fade-in delay-300">
+                <a href="#produtos">
+                    <Button
+                        size="lg"
+                        className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-primary/20 transition-all hover:scale-105"
+                    >
+                        Ver Coleção
+                    </Button>
+                </a>
+                <a href="/sobre">
+                    <Button
+                        variant="ghost"
+                        size="lg"
+                        className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-8 py-6 text-lg rounded-xl"
+                    >
+                        Saiba Mais
+                    </Button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hero Image -->
+        <div class="relative animate-float">
+            <!-- Blob behind image -->
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-blue-100/50 to-purple-100/50 rounded-full filter blur-3xl -z-10"
+            >
+            </div>
+
+            <Image
+                src={heroLight}
+                alt="Minimalist Light Desk Setup"
+                class="w-full h-auto object-contain drop-shadow-2xl transform hover:scale-[1.02] transition-transform duration-500"
+                quality="high"
+                loading="eager"
+            />
+        </div>
+    </div>
+</section>
+
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .delay-100 {
+        animation-delay: 0.1s;
+    }
+    .delay-200 {
+        animation-delay: 0.2s;
+    }
+    .delay-300 {
+        animation-delay: 0.3s;
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+    }
+</style>
