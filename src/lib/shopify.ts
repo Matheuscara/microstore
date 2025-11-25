@@ -16,7 +16,19 @@ export async function fetchFromShopify(queryGraphQL: string, variables: object =
     body: JSON.stringify(body),
   });
 
-  return response.json();
+  const text = await response.text();
+
+  if (!response.ok) {
+    console.error(`Shopify API Error (${response.status}):`, text);
+    throw new Error(`Shopify API Error: ${response.status} ${response.statusText}`);
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.error("Failed to parse Shopify JSON response:", text);
+    throw new Error("Invalid JSON response from Shopify");
+  }
 }
 
 export async function getAllProducts(): Promise<Product[]> {

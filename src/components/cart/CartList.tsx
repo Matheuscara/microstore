@@ -21,6 +21,29 @@ export default function CartList() {
         );
     }
 
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const handleCheckout = () => {
+        setIsLoading(true);
+
+        // Construir URL do Shopify checkout
+        const shopDomain = 'dsetup.myshopify.com';
+        const checkoutUrl = `https://${shopDomain}/cart/`;
+
+        // Adicionar cada item ao checkout
+        const cartParams = cartItems.map(item => {
+            // Extrair o ID numérico do variant ID (gid://shopify/ProductVariant/123456 -> 123456)
+            const variantId = item.id.split('/').pop();
+            return `${variantId}:${item.quantity}`;
+        }).join(',');
+
+        const finalUrl = `${checkoutUrl}${cartParams}`;
+        console.log("Redirecionando para checkout Shopify:", finalUrl);
+
+        // Redirecionar para o Shopify
+        window.location.href = finalUrl;
+    };
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-4">
@@ -104,8 +127,12 @@ export default function CartList() {
                             <span>R$ {total.toFixed(2)}</span>
                         </div>
                     </div>
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-white h-12 text-lg">
-                        Finalizar Compra
+                    <Button
+                        className="w-full bg-primary hover:bg-primary/90 text-white h-12 text-lg"
+                        onClick={handleCheckout}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Processando...' : 'Finalizar Compra'}
                     </Button>
                 </div>
             </div>
