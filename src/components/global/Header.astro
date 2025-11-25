@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+import logoAsset from "../../images/logo.png";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Search, User, ShoppingCart } from "lucide-react";
+---
+
+<header class="w-full z-50 border-b black-palete">
+    <div class="flex w-full items-center justify-between p-4">
+        <a href="/">
+            <Image alt="logo" src={logoAsset} class="h-8 w-auto" />
+        </a>
+
+        <div class="relative w-full max-w-xs">
+            <Search
+                className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                client:load
+            />
+            <Input type="text" placeholder="Pesquisar..." className="pl-10" client:load />
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" client:load>
+                <ShoppingCart className="h-5 w-5" client:load />
+                <span class="sr-only">Carrinho</span>
+            </Button>
+        </div>
+    </div>
+
+    <div
+        class="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-black px-4 py-2 text-sm text-white"
+    >
+        <span>Frete grátis e devolução</span>
+        <span class="hidden opacity-50 md:block">•</span>
+        <span>Envio em 24h</span>
+        <span class="hidden opacity-50 md:block">•</span>
+        <span>15% OFF na primeira compra</span>
+    </div>
+</header>
