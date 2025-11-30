@@ -1,6 +1,5 @@
 import { Product } from "./models/product";
 
-let productCache: Product[] | null = null;
 export async function fetchFromShopify(queryGraphQL: string, variables: object = {}) {
   const body = {
     query: queryGraphQL,
@@ -32,10 +31,6 @@ export async function fetchFromShopify(queryGraphQL: string, variables: object =
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  if (productCache) {
-    return productCache;
-  }
-
   const query = `
       query {
         products(first: 10) {
@@ -76,7 +71,6 @@ export async function getAllProducts(): Promise<Product[]> {
     }
 
     const products = productEdges.map((edge) => edge.node);
-    productCache = products; // Salva no cache
     return products;
   } catch (error) {
     console.error("Falha crítica ao buscar produtos:", error);
@@ -85,10 +79,6 @@ export async function getAllProducts(): Promise<Product[]> {
 }
 
 export async function getProductByHandle(handle: string): Promise<Product | null> {
-  // if (this.cachedProduct) {
-  //     return this.cachedProduct;
-  // }
-
   // 3. Se não, busca os detalhes completos na API
   const query = `
       query getProductByHandle($handle: String!) {
@@ -135,20 +125,6 @@ export async function getProductByHandle(handle: string): Promise<Product | null
     if (!product) {
       console.warn(`Aviso: Produto com handle "${handle}" não encontrado.`);
       return null;
-    }
-
-    // 4. Atualiza o cache com o produto detalhado
-    if (productCache) {
-      const productIndex = productCache.findIndex((p) => p.handle === handle);
-      if (productIndex !== -1) {
-        productCache[productIndex] = product;
-      } else {
-        // Se o produto não estava na lista inicial, adiciona
-        productCache.push(product);
-      }
-    } else {
-      // Se o cache estava vazio, inicia com este produto
-      productCache = [product];
     }
 
     return product;
