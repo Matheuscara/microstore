@@ -15,5 +15,49 @@ import { ClientRouter } from "astro:transitions";
     <body class="bg-white mx-auto flex flex-col">
         <main class="grow"><slot /></main>
         <Footer />
+
+        <!-- Cookie Setup for Privally Analysis -->
+        <script is:inline>
+            (function() {
+                // Helper function to set cookies
+                function setCookie(name, value, days) {
+                    const expires = new Date();
+                    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+                    document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+                }
+
+                // Necessary/Essential Cookies
+                setCookie('session_id', 'sess_' + Math.random().toString(36).substr(2, 9), 30);
+                setCookie('user_preferences', 'theme=light;lang=pt', 365);
+                setCookie('csrf_token', 'csrf_' + Math.random().toString(36).substr(2, 16), 1);
+
+                // Functional Cookies
+                setCookie('shopping_cart', 'cart_' + Math.random().toString(36).substr(2, 9), 7);
+                setCookie('recently_viewed', 'prod1,prod2,prod3', 30);
+                setCookie('currency', 'BRL', 365);
+
+                // Analytics/Performance Cookies
+                setCookie('_ga', 'GA1.1.' + Math.random().toString(36).substr(2, 9), 730);
+                setCookie('_gid', 'GA1.1.' + Math.random().toString(36).substr(2, 9), 1);
+                setCookie('_gat', '1', 1/1440);
+                setCookie('analytics_session', 'session_' + Date.now(), 1);
+
+                // Marketing/Advertising Cookies
+                setCookie('_fbp', 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9), 90);
+                setCookie('_gcl_au', '1.1.' + Math.random().toString(36).substr(2, 9), 90);
+                setCookie('user_tracking_id', 'track_' + Math.random().toString(36).substr(2, 16), 365);
+                setCookie('ad_preferences', 'targeted=true', 180);
+
+                console.log('Cookies criados:', document.cookie);
+
+                // Carregar Privally após criar os cookies
+                setTimeout(function() {
+                    var script = document.createElement('script');
+                    script.src = 'https://apigw.privally.io/webc/v1/privacy-center/minimal?webcid=bd95e726-885c-4392-860e-f936193f658f';
+                    document.body.appendChild(script);
+                    console.log('Privally carregado');
+                }, 500);
+            })();
+        </script>
     </body>
 </html>
