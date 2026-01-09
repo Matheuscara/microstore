@@ -60,5 +60,37 @@ import "../styles/global.css";
 <link rel="preconnect" href="https://rsms.me/" />
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 
+<!-- Cookie Setup for Privally Analysis -->
+<script is:inline>
+    // Helper function to set cookies
+    function setCookie(name, value, days, category) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+    }
+
+    // Necessary/Essential Cookies
+    setCookie('session_id', 'sess_' + Math.random().toString(36).substr(2, 9), 30, 'necessary');
+    setCookie('user_preferences', 'theme=light;lang=pt', 365, 'necessary');
+    setCookie('csrf_token', 'csrf_' + Math.random().toString(36).substr(2, 16), 1, 'necessary');
+
+    // Functional Cookies
+    setCookie('shopping_cart', 'cart_' + Math.random().toString(36).substr(2, 9), 7, 'functional');
+    setCookie('recently_viewed', 'prod1,prod2,prod3', 30, 'functional');
+    setCookie('currency', 'BRL', 365, 'functional');
+
+    // Analytics/Performance Cookies
+    setCookie('_ga', 'GA1.1.' + Math.random().toString(36).substr(2, 9), 730, 'analytics');
+    setCookie('_gid', 'GA1.1.' + Math.random().toString(36).substr(2, 9), 1, 'analytics');
+    setCookie('_gat', '1', 1/1440, 'analytics'); // 1 minuto
+    setCookie('analytics_session', 'session_' + Date.now(), 1, 'analytics');
+
+    // Marketing/Advertising Cookies
+    setCookie('_fbp', 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9), 90, 'marketing');
+    setCookie('_gcl_au', '1.1.' + Math.random().toString(36).substr(2, 9), 90, 'marketing');
+    setCookie('user_tracking_id', 'track_' + Math.random().toString(36).substr(2, 16), 365, 'marketing');
+    setCookie('ad_preferences', 'targeted=true', 180, 'marketing');
+</script>
+
 <!-- Privacy Center Script -->
 <script src="https://apigw.privally.io/webc/v1/privacy-center/minimal?webcid=bd95e726-885c-4392-860e-f936193f658f" is:inline></script>
